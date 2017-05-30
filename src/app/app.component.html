@@ -1,3 +1,45 @@
-<h1>
-  {{title}}
-</h1>
+
+<h1>To-do list of forms for your review</h1>
+<br />
+
+<div *ngIf="(isAnonymous)" class="errorDiv">
+    <span class="errorClass">
+        You have no UCLA to-do list. <br /><br />It is used by specific faculty and staff involved in reviewing forms at UCLA. If you believe this is a mistake and
+        that you should see a to-do list here, please inform your department’s Student Affairs Officer who will contact Academic Services on your behalf.
+    </span>
+</div>
+
+<div *ngIf="(!isAnonymous)">
+
+    <div id="todo-search-wrap" class="big-search nav-bg-light">
+        <div>
+            <input #searchTextInput placeholder="lookup a student, UID or form type" (keyup)="callSearchValue(event, searchTextInput.value)" class="txtTodolistSearch ui-autocomplete-input">
+        </div>
+        <div class="Row">
+            <div class="Cell"><a ng-href="#"><span class="studentBadge" (click)="sortBy('studentName')">Student&nbsp;<span [style]="getSortedStyle('studentName')" [class]="getSortedClass('studentName')"></span></span></a></div>
+            <div class="Cell"><a ng-href="#"><span class="staffBadge" (click)="sortBy('staffName')">Reviewer&nbsp;<span [class]="getSortedClass('staffName')"></span></span></a></div>
+            <div class="Cell"><a ng-href="#"><span class="commonBadge" (click)="sortBy('formType')">Form&nbsp;<span [class]="getSortedClass('formType')"></span></span></a></div>
+            <div class="Cell"><a ng-href="#"><span class="commonBadge" (click)="sortBy('formDate')">Date&nbsp;<span [class]="getSortedClass('formDate')"></span></span></a></div>
+            <div class="Cell"><a ng-href="#"><span class="commonBadge" (click)="sortBy('term')">Term&nbsp;<span [class]="getSortedClass('term')"></span></span></a></div>
+            <div class="Cell"><a ng-href="#"><span class="commonBadge" (click)="sortBy('studentUID')">UID&nbsp;<span [class]="getSortedClass('studentUID')"></span></span></a></div>
+
+        </div>
+    </div>
+
+    <div class="reviewSections">
+        <my-review subtitle="IN FOR YOUR REVIEW" [applications]="myApplications |  filterBy: [{searchString:(searchTextInput.value.length>=2?searchTextInput.value:(''))}]" searchText={{searchText}} sortColumn="{{sortColumn}}"></my-review>
+    </div>
+    <div [hidden]="isFaculty" class="reviewSections">
+        <my-review subtitle="IN FOR REVIEW BY COLLEAGUES" [applications]="colleagueApplications |  filterBy: [{searchString:(searchTextInput.value.length>=2?searchTextInput.value:(''))}]" searchText={{searchText}} sortColumn="{{sortColumn}}"></my-review>
+    </div>
+    <div [hidden]="isFaculty || isFS || isDean" class="reviewSections">
+        <my-review [subtitle]="isSAO || isFaculty ? 'IN FOR REVIEW BY THE GRADUATE DIVISION' : 'IN FOR REVIEW BY DIRECTOR AND ASSOCIATE DEANS'" [applications]="gradApplications |  filterBy: [{searchString:(searchTextInput.value.length>=2?searchTextInput.value:(''))}]" searchText={{searchText}} sortColumn="{{sortColumn}}"></my-review>
+    </div>
+    <div [hidden]="isFaculty || isSAO" class="reviewSections">
+        <my-review subtitle="IN FOR REVIEW BY PROGRAMS OR FACULTY" [applications]="programfacultyApplications |  filterBy: [{searchString:(searchTextInput.value.length>=2?searchTextInput.value:(''))}]" searchText={{searchText}} sortColumn="{{sortColumn}}"></my-review>
+    </div>
+    <div class="reviewSections">
+        <my-review subtitle="ARCHIVE" [applications]="archivedApplications |  filterBy: [{searchString:(searchTextInput.value.length>=2?searchTextInput.value:(''))}]" [showArchive]="show" searchText={{searchText}} sortColumn="{{sortColumn}}"></my-review>
+    </div>
+
+</div>

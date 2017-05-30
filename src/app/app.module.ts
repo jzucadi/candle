@@ -5,11 +5,15 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { FilterPipe } from './filter.pipe';
+import { OrderByPipe } from './order-by.pipe';
+import { ListViewComponent } from './list-view/list-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FilterPipe
+    FilterPipe,
+    OrderByPipe,
+    ListViewComponent
   ],
   imports: [
     BrowserModule,

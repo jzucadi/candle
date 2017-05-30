@@ -1,0 +1,60 @@
+<h4>{{subtitleName}}</h4>
+
+<div class="apps" *ngIf="applications && applications.length === 0">
+    <span class="textBadge">None!</span>
+</div>
+<div class="apps" [hidden]="subtitleName != 'ARCHIVE'" *ngIf="applications && applications.length !== 0">
+    <a ng-href="#" class="atextBadge" (click)="toggleArchive()">
+        <div [hidden]="show"><i class="fa fa-chevron-circle-down" style="font-size:1.2em;">&nbsp;&nbsp;</i>Show all of my students' approved or denied forms.</div>
+        <div [hidden]="(!show)"><i class="fa fa-chevron-circle-right">&nbsp;&nbsp;</i>Hide archived forms.</div>
+    </a>
+</div>
+
+<div *ngIf="(subtitleName == 'ARCHIVE' ? show : true) || (searchText.length > 0 && applications && applications.length > 0)">
+    <ul class="apps" *ngFor="let application of applications | orderBy: [sortColumn] ; let appIndex = index;">
+        <li>
+            <div class="Row">
+
+                <div class="Cell">
+                    <a href="{{RedirectURL}}{{application.formID}}" style="text-decoration:none;">
+                        <span [ngClass]="((!application.isApproved) && subtitleName == 'ARCHIVE') ? 'studentRedBadge' : 'studentBadge'">
+                            {{application.studentName}}
+                        </span>
+
+                    </a>
+                </div>
+
+                <div class="Cell"><span class="staffBadge">{{subtitleName === 'ARCHIVE'? application.staffName: application.staff[0].staffName}}</span></div>
+
+                <div class="Cell">
+                    <span class="commonBadge">{{application.formType}}</span>
+                </div>
+
+                <div class="Cell">
+                    <span [ngClass]="(application.isFormDue && subtitleName != 'ARCHIVE') ? 'redColorBadge' : 'commonBadge'">
+                        {{application.formDate | date: 'MMMM dd'}}
+                    </span>
+                </div>
+
+                <div class="Cell">
+                    <span class="commonBadge">{{application.term}}</span>
+                </div>
+
+                <div class="Cell">
+                    <span class="commonBadge">{{application.studentUID}}</span>
+                </div>
+            </div>
+        </li>
+        <li *ngFor="let row of application.staff | orderBy: [(sortColumn==='studentName'?'staffName':sortColumn)]; let ind = index; " [hidden]="ind === 0 || subtitleName == 'ARCHIVE'"
+            [class.selected]="application === selectedApplication"
+            (click)="onSelect(application)">
+
+            <div class="Row">
+                <div class="Cell"><span class="studentBadge"></span></div>
+                <div class="Cell"><span class="staffBadge">{{row.staffName}}</span></div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="emptyBadge"> </div>
+
