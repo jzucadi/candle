@@ -8,11 +8,15 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/Rx'; 
 import 'rxjs/add/operator/toPromise';
 
+
+var ApiEndpoint = 'https://grad.ucla.edu/apps/statusview/api/FormsAdmin/all/';
+var RedirectURL = 'https://grad.ucla.edu/academics/graduate-study/filing-fee-application-pilot/#status/';
+
 @Injectable()
 export class ApplicationService {
  private baseURL: string;
     
-    constructor(private http: Http, @Inject('ApiEndpoint') private apiEndpoint: string) {
+    constructor(private http: Http, @Inject('https://grad.ucla.edu/apps/statusview/api/FormsAdmin/all/') private apiEndpoint: string) {
         this.baseURL = apiEndpoint;
     }
 

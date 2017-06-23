@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { ApplicationService } from './application.service';
 import { Application } from './application'
+import { HttpModule } from '@angular/http';
+import { Http, Response }          from '@angular/http';
 
 
+var ApiEndpoint = 'https://grad.ucla.edu/apps/statusview/api/FormsAdmin/all/';
+var RedirectURL = 'https://grad.ucla.edu/academics/graduate-study/filing-fee-application-pilot/#status/';
 
 
 
